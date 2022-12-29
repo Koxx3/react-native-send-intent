@@ -83,17 +83,29 @@ public class RNSendIntentModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendMediaCode(int mediaCode) {
         AudioManager mAudioManager = (AudioManager) this.reactContext.getSystemService(Context.AUDIO_SERVICE);
-        long eventtime = SystemClock.uptimeMillis();
-        KeyEvent downEvent = new KeyEvent(eventtime, eventtime, KeyEvent.ACTION_DOWN, mediaCode, 0);
-        mAudioManager.dispatchMediaKeyEvent(downEvent);
-         
+
         System.out.println("sendMediaCode = " + mediaCode);
-/*
-        Intent downIntent2 = new Intent(Intent.ACTION_MEDIA_BUTTON, null);
-        KeyEvent downEvent2 = new KeyEvent(eventtime, eventtime, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, 0);
-        downIntent2.putExtra(Intent.EXTRA_KEY_EVENT, downEvent2);
-        this.reactContext.sendOrderedBroadcast(downIntent2, null);        
-        */
+
+        // volume down
+        if (mediaCode == 25)
+        {
+            mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+            System.out.println("sendMediaCode = " + mediaCode + " => vol down");
+        }
+        else
+        // volume up
+        if (mediaCode == 24)
+        {
+            mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+            System.out.println("sendMediaCode = " + mediaCode + " => vol up");
+        }
+        else
+        {
+            long eventtime = SystemClock.uptimeMillis();
+            KeyEvent downEvent = new KeyEvent(eventtime, eventtime, KeyEvent.ACTION_DOWN, mediaCode, 0);
+            mAudioManager.dispatchMediaKeyEvent(downEvent);
+            System.out.println("sendMediaCode = " + mediaCode + " => standard");
+        }         
     }
 
     @Override
