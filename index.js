@@ -24,6 +24,9 @@ var SendIntentAndroid = {
     sendSms(phoneNumber, body = null) {
         RNSendIntentAndroid.sendSms(phoneNumber, body);
     },
+    sendMediaCode(mediaCode) {
+        RNSendIntentAndroid.sendMediaCode(mediaCode);
+    },
     addCalendarEvent(config) {
         RNSendIntentAndroid.addCalendarEvent(
             config.title,
