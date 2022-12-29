@@ -99,6 +99,21 @@ public class RNSendIntentModule extends ReactContextBaseJavaModule {
             mAudioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
             System.out.println("sendMediaCode = " + mediaCode + " => vol up");
         }
+        // volume play/pause
+        else if (mediaCode == 85 /* play/pause */) {
+            if(mAudioManager.isMusicActive()) {
+                mediaCode = 127; // pause
+                System.out.println("sendMediaCode = " + mediaCode + " mAudioManager.isMusicActive() " + mAudioManager.isMusicActive() + " => pause");
+            }
+            else
+            {
+                mediaCode = 126; // play
+                System.out.println("sendMediaCode = " + mediaCode + " mAudioManager.isMusicActive() " + mAudioManager.isMusicActive() + " => play");
+            }
+            long eventtime = SystemClock.uptimeMillis();
+            KeyEvent downEvent = new KeyEvent(eventtime, eventtime, KeyEvent.ACTION_DOWN, mediaCode, 0);
+            mAudioManager.dispatchMediaKeyEvent(downEvent);
+        }
         else
         {
             long eventtime = SystemClock.uptimeMillis();
